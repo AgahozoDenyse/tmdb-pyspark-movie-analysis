@@ -107,32 +107,32 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-TMDB_API_KEY=your_api_key_here
+TMDB_API_KEY=my_api_key_here
 ```
 
 ---
 
 ### 5. Run the pipeline
 
-#### 🔹 Data Ingestion (Bronze)
+####  Data Ingestion (Bronze)
 
 ```bash
 python -m ingestion.bronze_ingestion
 ```
 
-#### 🔹 Data Transformation (Silver)
+####  Data Transformation (Silver)
 
 ```bash
 python -m processing.silver_transformer
 ```
 
-#### 🔹 KPI Analysis (Gold)
+####  KPI Analysis (Gold)
 
 ```bash
 python -m processing.gold_aggregations
 ```
 
-#### 🔹 Visualization
+####  Visualization
 
 ```bash
 python -m analytics.visualization
