@@ -4,25 +4,39 @@
 
 ## Project Overview
 
-This project implements an end-to-end data pipeline using **PySpark** to analyze movie data from the **TMDb API**. The goal is to extract, clean, transform, and analyze movie data to generate meaningful insights on financial performance, popularity, and trends.
+This project implements an **end-to-end data engineering and analytics pipeline** using **PySpark** and the **TMDb API**.
 
-The pipeline follows a **multi-layer architecture**:
+The pipeline extracts raw movie data, transforms it into structured datasets, computes key performance indicators (KPIs), and generates insightful visualizations.
 
-* **Bronze Layer** → Raw data ingestion from API
-* **Silver Layer** → Data cleaning and transformation
-* **Gold Layer** → KPI analysis and aggregations
-* **Visualization Layer** → Insightful plots and trends
+It follows a **Bronze–Silver–Gold architecture**, a best practice in modern data engineering.
 
 ---
 
-## Project Objectives
+## Project Highlights
 
-* Fetch movie data from TMDb API
-* Clean and structure raw JSON data
-* Perform exploratory data analysis (EDA)
-* Compute key performance indicators (KPIs)
-* Analyze franchises and directors
-* Visualize key insights
+* End-to-end PySpark ETL pipeline
+* TMDb API integration (movies + credits)
+* Bronze–Silver–Gold architecture
+* KPI analysis (Revenue, Profit, ROI, Ratings, Popularity)
+* Advanced filtering (actors & directors insights)
+* Franchise and director performance analysis
+* Data visualization using Matplotlib & Seaborn
+
+---
+
+## Architecture
+
+```
+TMDb API
+   ↓
+Bronze Layer (Raw JSON)
+   ↓
+Silver Layer (Cleaned & Structured Data)
+   ↓
+Gold Layer (KPIs & Aggregations)
+   ↓
+Visualization (Insights)
+```
 
 ---
 
@@ -34,21 +48,24 @@ tmdb-pyspark-project/
 ├── ingestion/            # API data extraction (Bronze layer)
 ├── processing/           # Data transformation (Silver & Gold)
 ├── analytics/            # Visualization scripts
+├── pipelines/            # Pipeline orchestration
 ├── utils/                # Logger and utilities
-├── data/                 # Bronze, Silver, Gold datasets
-├── outputs/              # Visualization images
-├── logs/                 # Pipeline logs
 │
-├── project_report.md     # Final project report
+├── data/                 # Data storage (ignored in Git)
+├── outputs/              # Generated plots
+├── logs/                 # Logs
+│
+├── project_report.md     # Detailed report
+├── README.md             # Documentation
 ├── requirements.txt      # Dependencies
-└── test_api.py           # API testing script
+└── test_api.py           # API testing
 ```
 
 ---
 
 ## Technologies Used
 
-* Python 3.12
+* Python 3.x
 * PySpark
 * Pandas
 * Matplotlib
@@ -59,15 +76,16 @@ tmdb-pyspark-project/
 
 ## How to Run the Project
 
-### 1. Clone or navigate to the project folder
+### 1. Clone the repository
 
 ```bash
-cd tmdb-pyspark-project
+git clone https://github.com/AgahozoDenyse/tmdb-pyspark-movie-analysis.git
+cd tmdb-pyspark-movie-analysis
 ```
 
 ---
 
-### 2. Create and activate virtual environment
+### 2. Create virtual environment
 
 ```bash
 python3 -m venv venv
@@ -84,7 +102,7 @@ pip install -r requirements.txt
 
 ---
 
-### 4. Add your TMDb API key
+### 4. Add TMDb API Key
 
 Create a `.env` file:
 
@@ -96,29 +114,55 @@ TMDB_API_KEY=your_api_key_here
 
 ### 5. Run the pipeline
 
-#### Step 1: Data Ingestion (Bronze)
+#### 🔹 Data Ingestion (Bronze)
 
 ```bash
 python -m ingestion.bronze_ingestion
 ```
 
-#### Step 2: Data Cleaning (Silver)
+#### 🔹 Data Transformation (Silver)
 
 ```bash
 python -m processing.silver_transformer
 ```
 
-#### Step 3: KPI Analysis (Gold)
+#### 🔹 KPI Analysis (Gold)
 
 ```bash
 python -m processing.gold_aggregations
 ```
 
-#### Step 4: Visualization
+#### 🔹 Visualization
 
 ```bash
 python -m analytics.visualization
 ```
+
+---
+
+## Visual Insights
+
+### Revenue vs Budget
+
+![Revenue vs Budget](outputs/revenue_vs_budget.png)
+
+---
+
+### Popularity vs Rating
+
+![Popularity vs Rating](outputs/popularity_vs_rating.png)
+
+---
+
+### ROI Distribution
+
+![ROI Distribution](outputs/roi_distribution.png)
+
+---
+
+### Revenue Over Time
+
+![Revenue Over Time](outputs/revenue_over_time.png)
 
 ---
 
@@ -127,41 +171,40 @@ python -m analytics.visualization
 ### Data Outputs
 
 * `data/bronze/` → Raw API data
-* `data/silver/` → Cleaned dataset
-* `data/gold/` → KPI results and aggregations
+* `data/silver/` → Clean dataset
+* `data/gold/` → KPI results
 
 ### Visual Outputs
 
-* `revenue_vs_budget.png`
-* `popularity_vs_rating.png`
-* `roi_distribution.png`
-* `revenue_over_time.png`
+* Revenue vs Budget
+* Popularity vs Rating
+* ROI Distribution
+* Revenue Over Time
 
 ---
 
-## Key Features
+## Key Insights
 
-* KPI rankings (Revenue, Profit, ROI, Ratings)
-* Advanced filtering (actors & directors)
-* Franchise performance analysis
-* Director performance insights
-* Data visualization for trends and patterns
+* High-budget movies tend to generate higher revenue, but ROI varies significantly
+* Popularity does not always correlate with higher ratings
+* Franchise movies often outperform standalone films
+* Certain directors consistently generate higher revenue
 
 ---
 
-##Challenges Faced
+## Challenges Faced
 
-* Handling nested JSON data structures
+* Handling nested JSON structures (arrays and structs)
 * Managing PySpark data types
-* Converting Spark data to Pandas
-* Configuring Java environment for Spark
+* Converting Spark data for visualization
+* Configuring Java & PySpark environment
 
 ---
 
 ## Future Improvements
 
 * Expand dataset using API pagination
-* Add real-time data processing
+* Add real-time data ingestion
 * Integrate machine learning models
 * Deploy pipeline using Docker or cloud platforms
 
@@ -169,7 +212,7 @@ python -m analytics.visualization
 
 ## Report
 
-A detailed explanation of the project is available in:
+Detailed report available in:
 
 ```
 project_report.md
@@ -181,9 +224,8 @@ project_report.md
 
 **Denyse AGAHOZO**
 
-
 ---
 
 ## Final Remark
 
-This project demonstrates a complete **data engineering and analytics pipeline**, showcasing practical skills in PySpark, API integration, and data visualization.
+This project demonstrates a complete **data engineering workflow**, combining API integration, big data processing with PySpark, and analytical insights — suitable for real-world applications.
