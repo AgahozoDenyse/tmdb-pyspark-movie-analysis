@@ -1,43 +1,51 @@
+from pyspark.sql import SparkSession
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from pyspark.sql import SparkSession
+from utils.logger import get_logger
 
 # -------------------------
-# Initialize Spark
+# Initialize Spark (WSL-safe)
 # -------------------------
-spark = SparkSession.builder.appName("Visualization").getOrCreate()
+spark = (
+    SparkSession.builder
+    .appName("Visualization")
+    .master("local[*]")
+    .config("spark.driver.host", "127.0.0.1")
+    .getOrCreate()
+)
+
+# Logger
+logger = get_logger("visualization")
 
 # -------------------------
 # Load data
 # -------------------------
+logger.info("Loading Silver dataset...")
 df = spark.read.parquet("data/silver/movies")
 
-# Convert to pandas
 pdf = df.toPandas()
 
-# Set style
 sns.set(style="whitegrid")
 
 # -------------------------
 # Data Preparation
 # -------------------------
+logger.info("Preparing data...")
 
-# Convert release_date safely
 pdf["release_date"] = pd.to_datetime(pdf["release_date"], errors="coerce")
 
-# Robust year extraction (avoids .dt errors)
 pdf["year"] = pdf["release_date"].apply(
     lambda x: x.year if pd.notnull(x) else None
 )
 
-# Compute ROI
-pdf["roi"] = pdf["revenue_musd"] / pdf["budget_musd"]
+# Safe ROI
+pdf["roi"] = pdf.apply(
+    lambda row: row["revenue_musd"] / row["budget_musd"]
+    if row["budget_musd"] and row["budget_musd"] > 0 else None,
+    axis=1
+)
 
-# Handle division issues
-pdf["roi"] = pdf["roi"].replace([float("inf"), -float("inf")], None)
-
-# Clean dataset
 pdf_clean = pdf.dropna(subset=[
     "budget_musd",
     "revenue_musd",
@@ -94,3 +102,5 @@ plt.ylabel("Revenue (Million USD)")
 plt.tight_layout()
 plt.savefig("outputs/revenue_over_time.png")
 plt.close()
+
+logger.info("Visualizations saved in outputs/")
